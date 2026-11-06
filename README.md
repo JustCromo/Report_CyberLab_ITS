@@ -10,19 +10,22 @@
 ## Indice
 
 1. [Introduzione](#1-introduzione)
-2. [Ambiente e infrastruttura](#2-ambiente-e-infrastruttura)
-3. [Attività del 5 novembre](#3-attività-del-5-novembre--giorno-1)
-   - [Flipper Zero](#31-flipper-zero)
-   - [Configurazione router](#32-configurazione-iniziale-dei-router)
-   - [Raspberry Pi 5](#33-configurazione-del-raspberry-pi-5)
-   - [Wazuh](#34-deployment-e-configurazione-di-wazuh)
-   - [Vulnerability Detection e CVE triage](#35-vulnerability-detection-e-cve-triage)
-4. [Attività del 6 novembre](#4-attività-del-6-novembre--giorno-2)
-   - [Configurazione mesh](#41-configurazione-mesh-dei-router)
-   - [Analisi CVE-2026-98432](#42-analisi-di-cve-2026-98432)
-   - [Battle 1 — CTF](#43-battle-1--ctf)
-5. [Risultati e considerazioni tecniche](#5-risultati-e-considerazioni-tecniche)
-6. [Materiale e struttura del repository](#6-materiale-e-struttura-del-repository)
+2. [Attività preparatorie](#2-attività-preparatorie)
+3. [Connessioni e configurazione di rete](#3-connessioni-e-configurazione-di-rete)
+4. [Ambiente e infrastruttura](#4-ambiente-e-infrastruttura)
+5. [Attività del 5 novembre — Giorno 1](#5-attività-del-5-novembre--giorno-1)
+   - [Flipper Zero](#51-flipper-zero)
+   - [Configurazione router](#52-configurazione-iniziale-dei-router)
+   - [Raspberry Pi 5](#53-configurazione-del-raspberry-pi-5)
+   - [Wazuh](#54-deployment-e-configurazione-di-wazuh)
+   - [Hardening Ubuntu Server](#55-configurazione-aggiornamento-e-hardening-di-ubuntu-server-26041-lts)
+6. [Attività del 6 novembre — Giorno 2](#6-attività-del-6-novembre--giorno-2)
+   - [Configurazione mesh](#61-configurazione-mesh-dei-router)
+   - [Analisi CVE-2026-98432](#62-analisi-di-cve-2026-98432)
+   - [Battle 1 — CTF](#63-battle-1--ctf)
+7. [Risultati e considerazioni tecniche](#7-risultati-e-considerazioni-tecniche)
+8. [Utilizzo del report](#8-utilizzo-del-report)
+9. [Materiale e struttura del repository](#9-materiale-e-struttura-del-repository)
 
 ---
 
@@ -45,7 +48,61 @@ L'obiettivo di questo documento è conservare una descrizione tecnica delle atti
 
 ---
 
-## 2. Ambiente e infrastruttura
+## 2. Attività preparatorie
+
+### 2.1 Attività di gruppo
+
+Le attività preparatorie si sono svolte principalmente nella prima giornata, in parallelo alla configurazione dell'infrastruttura.
+
+A livello di gruppo, le attività hanno riguardato:
+
+- organizzazione della postazione e dei Raspberry Pi ricevuti;
+- messa a disposizione reciproca dei dispositivi per test di connettività e accesso SSH tra i partecipanti;
+- scambio di informazioni e consigli tecnici sulle attività da svolgere (utilizzo degli strumenti, possibili approcci alle challenge, considerazioni su tecniche difensive come l'impiego di honeypot);
+- coordinamento generale sulla configurazione della rete di laboratorio.
+
+### 2.2 Attività individuali
+
+A livello individuale, la preparazione ha compreso:
+
+- lettura e analisi del briefing della competizione;
+- configurazione del Raspberry Pi personale con Ubuntu Server 26.04.1 LTS e accesso SSH tramite chiave pubblica;
+- deployment e configurazione dell'agente Wazuh;
+- analisi delle vulnerabilità rilevate e triage delle CVE con possibile superficie di attacco remota;
+- installazione degli strumenti necessari alle attività CTF sul Raspberry Pi.
+
+---
+
+## 3. Connessioni e configurazione di rete
+
+La rete privata di laboratorio era basata sull'indirizzamento `192.168.50.0/24` e distribuita tramite due router ASUS RT-BE88U in configurazione mesh.
+
+Il router principale era collegato all'infrastruttura centrale ITS (`SALA_BONSIGNORI`) e distribuiva connettività sia via cavo che wireless. Le postazioni dell'aula disponevano di prese Ethernet numerate collegate a uno switch nel rack: per collegare una postazione alla rete di laboratorio, la relativa porta dello switch veniva collegata a una porta libera del secondo switch presente nel rack. Per la postazione N30, è stata collegata la porta 30.
+
+Le reti wireless disponibili durante la seconda giornata, dopo la configurazione mesh, erano:
+
+```text
+Battle2.4G
+Battle5G
+```
+
+Il Raspberry Pi personale è stato collegato alla rete tramite cavo Ethernet e ha ottenuto l'indirizzo `192.168.50.73`. L'accesso amministrativo avveniva esclusivamente via SSH con autenticazione a chiave pubblica:
+
+```bash
+ssh ivan@Raspberstein        # dalla rete locale
+ssh ivan@192.168.50.73       # via IP
+```
+
+| Indirizzo | Dispositivo / ruolo |
+|---|---|
+| `192.168.50.1` | Router ASUS principale |
+| `192.168.50.73` | Raspberry Pi personale (`Raspberstein`) |
+| `192.168.50.143` | Server Wazuh |
+| `192.168.50.10` | Target `battle1` |
+
+---
+
+## 4. Ambiente e infrastruttura
 
 ### 2.1 Hardware e dispositivi
 
@@ -97,7 +154,7 @@ Questa configurazione permetteva di distribuire la connettività alla rete priva
 
 ---
 
-## 3. Attività del 5 novembre — Giorno 1
+## 5. Attività del 5 novembre — Giorno 1
 
 ### 3.1 Flipper Zero
 
@@ -319,7 +376,46 @@ Nel CSV analizzato non è stata individuata una vulnerabilità High che fornisse
 
 ---
 
-## 4. Attività del 6 novembre — Giorno 2
+### 5.5 Configurazione, aggiornamento e hardening di Ubuntu Server 26.04.1 LTS
+
+#### 5.5.1 Aggiornamento del sistema
+
+Dopo la configurazione iniziale è stato eseguito un aggiornamento completo dei pacchetti installati:
+
+```bash
+sudo apt update && sudo apt upgrade -y
+```
+
+L'operazione ha aggiornato i pacchetti disponibili all'ultima versione nei repository ufficiali di Ubuntu 26.04.1 LTS.
+
+#### 5.5.2 Analisi della superficie di attacco e triage delle CVE
+
+L'attività di hardening si è concentrata sull'analisi della superficie di attacco effettiva del sistema, in particolare sulla valutazione di quali vulnerabilità rilevate da Wazuh potessero essere sfruttate da remoto.
+
+**Superficie di attacco esposta:**
+
+Il Raspberry Pi personale esponeva un'unica porta raggiungibile dall'esterno:
+
+| Porta | Servizio | Note |
+|---|---|---|
+| TCP 22 | OpenSSH | Autenticazione esclusivamente tramite chiave pubblica |
+
+L'autenticazione SSH con chiave pubblica esclude de facto gli attacchi di brute force sulle credenziali. Non erano presenti altri servizi in ascolto su interfacce di rete accessibili dalla rete di laboratorio.
+
+**Ragionamento sul triage:**
+
+Le vulnerabilità High rilevate da Wazuh (3.042) sono state analizzate dal punto di vista dei prerequisiti di sfruttamento. Le categorie principali individuate erano:
+
+- vulnerabilità del kernel legate a filesystem specifici (NTFS3, F2FS, Btrfs…): richiedono mount locale del filesystem o capacità privilegiate;
+- vulnerabilità legate a driver hardware (USB, Bluetooth, GPU…): richiedono presenza fisica o accesso locale;
+- vulnerabilità di protocolli di rete non attivi (SCTP, MPTCP, ATM…): non applicabili in assenza del relativo listener;
+- Local Privilege Escalation: richiedono accesso locale preliminare.
+
+**Conclusione:** considerando la configurazione del sistema (unica porta esposta, SSH con chiave pubblica, assenza di listener aggiuntivi), nessuna delle vulnerabilità analizzate presentava un percorso di compromissione remota non autenticata applicabile. Il sistema è stato ritenuto sufficientemente sicuro rispetto alla superficie di attacco effettiva.
+
+---
+
+## 6. Attività del 6 novembre — Giorno 2
 
 ### 4.1 Configurazione mesh dei router
 
@@ -1019,7 +1115,7 @@ La competizione ha richiesto l'utilizzo combinato di strumenti di network discov
 
 ---
 
-## 5. Risultati e considerazioni tecniche
+## 7. Risultati e considerazioni tecniche
 
 ### 5.1 Infrastruttura e monitoring
 
@@ -1039,7 +1135,26 @@ La Battle 1 ha permesso di applicare tecniche di ricognizione, enumerazione e an
 
 ---
 
-## 6. Materiale e struttura del repository
+## 8. Utilizzo del report
+
+Questo documento è pensato per un collega tecnico che voglia ripercorrere le attività svolte o utilizzarlo come riferimento.
+
+**Come orientarsi:**
+
+- Le sezioni 2 e 3 descrivono il contesto generale (attività preparatorie e rete): utili per capire l'ambiente prima di leggere le parti operative.
+- La sezione 5 (Giorno 1) copre la configurazione dell'infrastruttura: Flipper Zero, Raspberry Pi, Wazuh e hardening.
+- La sezione 6 (Giorno 2) copre l'analisi CVE e la Battle CTF con i dettagli tecnici di ogni sfida.
+- Ogni challenge nella sezione 6.3 segue la struttura: **problema → ragionamento → comandi → flag**. I comandi riportati sono quelli effettivamente utilizzati durante la competizione.
+
+**Per riprodurre le attività CTF** è necessario un ambiente di rete equivalente con il target `battle1` raggiungibile. I comandi sono eseguibili da un host Linux con gli strumenti elencati in sezione 6.3.3.
+
+**Immagini:** disponibili in `docs/images/`, suddivise per argomento. Nel README sono richiamate inline con tag `<figure>`: si visualizzano correttamente su GitHub e in qualsiasi renderer Markdown con supporto HTML.
+
+**Script:** in `scripts/win-d-demo.txt` è conservato lo script BadUSB per Flipper Zero utilizzato durante le prove della prima giornata.
+
+---
+
+## 9. Materiale e struttura del repository
 
 ```text
 report/
