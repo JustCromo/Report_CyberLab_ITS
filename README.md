@@ -3,7 +3,7 @@
 > **Periodo:** 5–6 novembre 2026  
 > **Ambito:** Network Security, Vulnerability Assessment, Red Team, CTF e Security Monitoring  
 > **Ambiente:** Raspberry Pi 5, Ubuntu Server 26.04.1 LTS, ASUS RT-BE88U, Wazuh, Flipper Zero  
-> **Autore:** Ivan Urlini
+> **Autore:** Ivan Alexander Urlini
 
 ---
 
