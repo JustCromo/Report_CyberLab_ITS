@@ -309,13 +309,8 @@ L'agent del Raspberry Pi personale è identificato nella dashboard con i seguent
 | Cluster node | `node01` |
 
 <figure>
-  <img src="docs/images/wazuh/agent-overview.png" alt="Dettagli agent Wazuh Raspberstein" />
-  <figcaption>Dettaglio dell'agent Wazuh associato a Raspberstein.</figcaption>
-</figure>
-
-<figure>
-  <img src="docs/images/wazuh/agent-overview.png" alt="Dashboard Wazuh dell'endpoint" />
-  <figcaption>Dashboard dell'endpoint con inventario, eventi e informazioni MITRE ATT&CK.</figcaption>
+  <img src="docs/images/wazuh/agent-overview.png" alt="Dashboard Wazuh Raspberstein" />
+  <figcaption>Dashboard dell'agent Wazuh: inventario di sistema, eventi, MITRE ATT&CK e compliance.</figcaption>
 </figure>
 
 ---
