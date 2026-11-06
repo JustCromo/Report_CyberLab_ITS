@@ -77,7 +77,7 @@ A livello individuale, la preparazione ha compreso:
 
 La rete privata di laboratorio era basata sull'indirizzamento `192.168.50.0/24` e distribuita tramite due router ASUS RT-BE88U in configurazione mesh.
 
-Il router principale era collegato all'infrastruttura centrale ITS (`SALA_BONSIGNORI`) e distribuiva connettività sia via cavo che wireless. Le postazioni dell'aula disponevano di prese Ethernet numerate collegate a uno switch nel rack: per collegare una postazione alla rete di laboratorio, la relativa porta dello switch veniva collegata a una porta libera del secondo switch presente nel rack. Per la postazione N30, è stata collegata la porta 30.
+Il router principale era collegato all'infrastruttura centrale ITS e distribuiva connettività sia via cavo che wireless. Le postazioni dell'aula disponevano di prese Ethernet numerate collegate a uno switch nel rack: per collegare una postazione alla rete di laboratorio, la relativa porta dello switch veniva collegata a una porta libera del secondo switch presente nel rack. Per la postazione N30, è stata collegata la porta 30.
 
 Le reti wireless disponibili durante la seconda giornata, dopo la configurazione mesh, erano:
 
@@ -133,7 +133,7 @@ ssh ivan@192.168.50.73       # via IP
 
 La rete privata utilizzata durante le attività era basata sull'indirizzamento `192.168.50.0/24`.
 
-Il collegamento alla rete ITS avveniva tramite il router principale, connesso all'infrastruttura centrale denominata `SALA_BONSIGNORI`.
+Il collegamento alla rete ITS avveniva tramite il router principale, connesso all'infrastruttura centrale.
 
 Le postazioni dell'aula disponevano di prese Ethernet numerate, collegate a uno switch nel rack. Per collegare una postazione alla rete di laboratorio, la relativa porta dello switch delle postazioni veniva collegata a una porta libera del secondo switch presente nel rack.
 
